@@ -1,6 +1,7 @@
 package com.joni.task_manager_springboot.controllers;
 
 
+import com.joni.task_manager_springboot.Services.TaskService;
 import com.joni.task_manager_springboot.models.Task;
 import com.joni.task_manager_springboot.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class TaskController {
     // Inject TaskRepository to access the database operations
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private TaskService taskService;
 
 
     // Add methods for CRUD operations on tasks
@@ -80,5 +84,17 @@ public class TaskController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/{taskId}/mark-in-progress")
+    public ResponseEntity<Task> markInProgress(@PathVariable Integer taskId) {
+        Task updatedTask = taskService.markInProgress(taskId);
+        return ResponseEntity.ok(updatedTask);
+    }
+
+    @PutMapping("/{taskId}/mark-done")
+    public ResponseEntity<Task> markCompleted(@PathVariable Integer taskId) {
+        Task updatedTask = taskService.markAsDone(taskId);
+        return ResponseEntity.ok(updatedTask);
     }
 }
