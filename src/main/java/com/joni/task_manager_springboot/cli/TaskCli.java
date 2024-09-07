@@ -7,7 +7,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class TaskCli {
-    private static final String API_URL = "http://localhost:8080//system/api/v1/tasks";
+    private static final String API_URL = "http://localhost:8080/system/api/v1/tasks";
     private static final HttpClient httpClient = HttpClient.newHttpClient();
 
     public static void main(String[] args) throws IOException, InterruptedException{
@@ -19,7 +19,11 @@ public class TaskCli {
         String command = args[0];
         switch (command) {
             case "list":
-                listTasks();
+                if (args.length == 1) {
+                    listTasks();
+                    break;
+                }
+                listTasksByStatus(args[1]);
                 break;
             case "add":
                 if (args.length < 2) {
@@ -75,8 +79,16 @@ public class TaskCli {
         sendRequest(request);
     }
 
+    private static void listTasksByStatus(String status) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+               .uri(URI.create(API_URL + "/status/" + status))
+               .GET()
+               .build();
+        sendRequest(request);
+    }
+
     private static void addTask(String description) throws IOException, InterruptedException {
-        String json = String.format("{\"description\":\"%s\"}", description);
+        String json = String.format("{\"description\":\"%s\",\"status\":\"TODO\"}", description);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_URL))
                 .header("Content-Type", "application/json")

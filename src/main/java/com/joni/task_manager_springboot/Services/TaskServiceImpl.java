@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,6 +30,17 @@ public class TaskServiceImpl implements TaskService{
     @Transactional
     public Task markAsDone(Integer taskId) {
         return changeStatus(taskId, TaskStatus.DONE);
+    }
+
+    @Override
+    public List<Task> GetTasksByStatus(String status) {
+        TaskStatus taskStatus;
+        try {
+            taskStatus = TaskStatus.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid status: " + status);
+        }
+        return taskRepository.findByStatus(taskStatus);
     }
 
     private Task changeStatus(Integer taskId, TaskStatus status) {

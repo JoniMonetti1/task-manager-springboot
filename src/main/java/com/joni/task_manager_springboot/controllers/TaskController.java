@@ -48,6 +48,18 @@ public class TaskController {
 
 
     @CrossOrigin
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<Task>> getTasksByStatus(@PathVariable String status) {
+        List<Task> tasks = taskService.GetTasksByStatus(status);
+
+        if (tasks.isEmpty()) {
+            return  ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(tasks);
+    }
+
+
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
         Task savedTask = taskRepository.save(task);
@@ -86,11 +98,13 @@ public class TaskController {
         return ResponseEntity.notFound().build();
     }
 
+
     @PutMapping("/{taskId}/mark-in-progress")
     public ResponseEntity<Task> markInProgress(@PathVariable Integer taskId) {
         Task updatedTask = taskService.markInProgress(taskId);
         return ResponseEntity.ok(updatedTask);
     }
+
 
     @PutMapping("/{taskId}/mark-done")
     public ResponseEntity<Task> markCompleted(@PathVariable Integer taskId) {
