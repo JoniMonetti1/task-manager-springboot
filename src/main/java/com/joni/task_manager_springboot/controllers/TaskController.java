@@ -50,7 +50,7 @@ public class TaskController {
     @CrossOrigin
     @GetMapping("/status/{status}")
     public ResponseEntity<List<Task>> getTasksByStatus(@PathVariable String status) {
-        List<Task> tasks = taskService.GetTasksByStatus(status);
+        List<Task> tasks = taskService.getTasksByStatus(status);
 
         if (tasks.isEmpty()) {
             return  ResponseEntity.noContent().build();

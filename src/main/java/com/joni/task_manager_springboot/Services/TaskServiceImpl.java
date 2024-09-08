@@ -33,7 +33,7 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public List<Task> GetTasksByStatus(String status) {
+    public List<Task> getTasksByStatus(String status) {
         TaskStatus taskStatus;
         try {
             taskStatus = TaskStatus.valueOf(status.toUpperCase());

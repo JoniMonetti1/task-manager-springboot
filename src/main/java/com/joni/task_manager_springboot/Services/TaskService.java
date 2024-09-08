@@ -7,5 +7,5 @@ import java.util.List;
 public interface TaskService {
     Task markInProgress(Integer taskId);
     Task markAsDone(Integer taskId);
-    List<Task> GetTasksByStatus(String status);
+    List<Task> getTasksByStatus(String status);
 }
