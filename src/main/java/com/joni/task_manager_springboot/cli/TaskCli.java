@@ -10,7 +10,7 @@ public class TaskCli {
     private static final String API_URL = "http://localhost:8080/system/api/v1/tasks";
     private static final HttpClient httpClient = HttpClient.newHttpClient();
 
-    public static void main(String[] args) throws IOException, InterruptedException{
+    public static void main(String[] args) throws IOException, InterruptedException {
         if (args.length == 0) {
             System.out.println("Usage: task-cli <command> [<args>]");
             return;
@@ -76,7 +76,7 @@ public class TaskCli {
     }
 
     private static HttpResponse<String> sendRequest(HttpRequest request) throws IOException, InterruptedException {
-         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
     private static void handleResponse(HttpResponse<String> response) {
@@ -122,9 +122,9 @@ public class TaskCli {
 
     private static void listTasksByStatus(String status) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-               .uri(URI.create(API_URL + "/status/" + status))
-               .GET()
-               .build();
+                .uri(URI.create(API_URL + "/status/" + status))
+                .GET()
+                .build();
         HttpResponse<String> response = sendRequest(request);
         handleResponse(response);
     }

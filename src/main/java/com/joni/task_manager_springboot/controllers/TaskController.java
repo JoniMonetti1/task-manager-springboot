@@ -7,11 +7,8 @@ import com.joni.task_manager_springboot.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/tasks")
@@ -30,85 +27,53 @@ public class TaskController {
     @CrossOrigin
     @GetMapping
     public ResponseEntity<List<Task>> getTasks() {
-        List<Task> tasks = taskRepository.findAll();
-
-        if (tasks.isEmpty()) {
-            return  ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(tasks);
+        return taskService.getTasks();
     }
 
 
     @CrossOrigin
     @GetMapping("/{taskId}")
     public ResponseEntity<Task> getOneTask(@PathVariable Integer taskId) {
-        Optional<Task> optionalTask = taskRepository.findById(taskId);
-        return optionalTask.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return taskService.getOneTask(taskId);
     }
 
 
     @CrossOrigin
     @GetMapping("/status/{status}")
     public ResponseEntity<List<Task>> getTasksByStatus(@PathVariable String status) {
-        List<Task> tasks = taskService.getTasksByStatus(status);
-
-        if (tasks.isEmpty()) {
-            return  ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(tasks);
+        return taskService.getTasksByStatus(status);
     }
 
 
     @CrossOrigin
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        Task savedTask = taskRepository.save(task);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(task.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).body(savedTask);
+        return taskService.createTask(task);
     }
 
 
     @CrossOrigin
     @PutMapping("/{taskId}")
     public ResponseEntity<Task> modifyTask(@PathVariable Integer taskId, @RequestBody Task updates) {
-        Optional<Task> optionalTask = taskRepository.findById(taskId);
-        if (optionalTask.isPresent()) {
-            updates.setId(taskId);
-            Task updatedTask = taskRepository.save(updates);
-            return ResponseEntity.ok(updatedTask);
-        }
-        return ResponseEntity.notFound().build();
+        return taskService.modifyTask(taskId, updates);
     }
 
 
     @CrossOrigin
     @DeleteMapping("/{taskId}")
     public ResponseEntity<?> deleteTask(@PathVariable Integer taskId) {
-        Optional<Task> optionalTask = taskRepository.findById(taskId);
-        if (optionalTask.isPresent()) {
-            taskRepository.deleteById(taskId);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+        return taskService.deleteTask(taskId);
     }
 
 
     @PutMapping("/{taskId}/mark-in-progress")
     public ResponseEntity<Task> markInProgress(@PathVariable Integer taskId) {
-        Task updatedTask = taskService.markInProgress(taskId);
-        return ResponseEntity.ok(updatedTask);
+        return taskService.markInProgress(taskId);
     }
 
 
     @PutMapping("/{taskId}/mark-done")
     public ResponseEntity<Task> markCompleted(@PathVariable Integer taskId) {
-        Task updatedTask = taskService.markAsDone(taskId);
-        return ResponseEntity.ok(updatedTask);
+        return taskService.markAsDone(taskId);
     }
 }

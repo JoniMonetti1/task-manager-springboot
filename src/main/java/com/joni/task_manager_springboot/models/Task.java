@@ -1,11 +1,11 @@
 package com.joni.task_manager_springboot.models;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
@@ -34,7 +34,10 @@ public class Task {
         this.updatedAt = updatedAt;
     }
 
-    public Task(){};
+    public Task() {
+    }
+
+    ;
 
 
     //getters and setters
