@@ -1,6 +1,6 @@
 # Task Manager CLI
 
-Un gestor de tareas con interfaz de línea de comandos (CLI) y API REST, implementado en Java con Spring Boot.
+Un gestor de tareas con interfaz de línea de comandos (CLI) y API REST, implementado en Java con Spring Boot. Idea de proyecto brindada por https://roadmap.sh/projects/task-tracker 
 
 ## Tabla de Contenidos
 - [Instalación](#instalación)
